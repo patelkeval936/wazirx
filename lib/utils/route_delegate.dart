@@ -6,23 +6,18 @@ import '../models/stock_route_path.dart';
 final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
 bool isLoggedIn = false;
-bool showLoginPage = false;
 
 class StockRouterDelegate extends RouterDelegate<StockRoutePath> with ChangeNotifier, PopNavigatorRouterDelegateMixin<StockRoutePath> {
 
   Stock? selectedStock;
-
-  bool showStockPage = false;
-  bool showStockDetailPage = false;
+  bool showLoginPage = false;
 
   @override
   Widget build(BuildContext context) {
-    print(isLoggedIn);
-    print('show login page status $showLoginPage');
     return Navigator(
       pages: [
         MaterialPage(
-          key: ValueKey('home page'),
+          key: const ValueKey('home page'),
           child: MyHomePage(
             onTap: () {
               showLoginPage = true;
@@ -36,7 +31,7 @@ class StockRouterDelegate extends RouterDelegate<StockRoutePath> with ChangeNoti
         ),
         if (showLoginPage)
           MaterialPage(
-              key: ValueKey('login page'),
+              key: const ValueKey('login page'),
               child: LoginPage(onTap: () {
                 isLoggedIn = !isLoggedIn;
                 notifyListeners();
@@ -45,7 +40,7 @@ class StockRouterDelegate extends RouterDelegate<StockRoutePath> with ChangeNoti
           MaterialPage(key: ValueKey('stock/${selectedStock?.name}'), child: StockDetailPage(stock: selectedStock!)),
         if (selectedStock != null && !isLoggedIn)
           MaterialPage(
-              key: ValueKey('login '),
+              key: const ValueKey('login '),
               child: LoginPage(onTap: () {
                 isLoggedIn = !isLoggedIn;
                 notifyListeners();
@@ -69,7 +64,6 @@ class StockRouterDelegate extends RouterDelegate<StockRoutePath> with ChangeNoti
   @override
   StockRoutePath get currentConfiguration {
     if (showLoginPage || selectedStock != null && !isLoggedIn) {
-      print('giving show login page config');
       return StockRoutePath.logIn();
     } else if (selectedStock != null && isLoggedIn) {
       return StockRoutePath.stockDetails(stocks.indexOf(selectedStock!));
@@ -81,22 +75,21 @@ class StockRouterDelegate extends RouterDelegate<StockRoutePath> with ChangeNoti
 
   @override
   Future<void> setNewRoutePath(StockRoutePath configuration) async {
-    if (configuration.showLoginPage) {
-      print('inside config show login page ${configuration.showLoginPage}');
-      showLoginPage = true;
-      notifyListeners();
 
-    }
-      if (configuration.id != null) {
-      showStockDetailPage = true;
-      selectedStock = stocks[configuration.id!];
+    if (configuration.showLoginPage) {
+      showLoginPage = true;
+      selectedStock = null;
       notifyListeners();
-    }
-      if (configuration.id == null) {
+    } else if (configuration.id != null) {
+      selectedStock = stocks[configuration.id!];
       showLoginPage = false;
-      showStockDetailPage = false;
+      notifyListeners();
+    }else
+      {
+      showLoginPage = false;
       selectedStock = null;
       notifyListeners();
     }
+
   }
 }

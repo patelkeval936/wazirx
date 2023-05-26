@@ -1,7 +1,7 @@
 class StockRoutePath{
 
   int? id;
-  bool goToLoginPage = false;
+  bool _goToLoginPage = false;
 
 
   StockRoutePath.home();
@@ -10,7 +10,10 @@ class StockRoutePath{
     id = stockId;
   }
 
-  StockRoutePath.logIn(): goToLoginPage = true;
+  StockRoutePath.logIn(){
+    _goToLoginPage = true;
+    id = null;
+  }
 
 
 
@@ -18,7 +21,7 @@ class StockRoutePath{
 
   bool get showStockDetail => id != null;
 
-  bool get showLoginPage => goToLoginPage;
+  bool get showLoginPage => _goToLoginPage;
 
 }
 
