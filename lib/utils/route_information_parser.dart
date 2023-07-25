@@ -31,7 +31,8 @@ class StockRouteInformationParser extends RouteInformationParser<StockRoutePath>
 
     if (configuration.showLoginPage) {
       return const RouteInformation(location: '/login');
-    } else if (configuration.showStockDetail) {
+    } else
+      if (configuration.showStockDetail) {
       return RouteInformation(location: '/stock/${configuration.id}');
     }
       // if (configuration.showHome)

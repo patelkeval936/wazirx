@@ -8,7 +8,6 @@ final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 bool isLoggedIn = false;
 
 class StockRouterDelegate extends RouterDelegate<StockRoutePath> with ChangeNotifier, PopNavigatorRouterDelegateMixin<StockRoutePath> {
-
   Stock? selectedStock;
   bool showLoginPage = false;
 
@@ -50,9 +49,9 @@ class StockRouterDelegate extends RouterDelegate<StockRoutePath> with ChangeNoti
         if (!route.didPop(result)) {
           return false;
         }
-
+        showLoginPage = false;
         selectedStock = null;
-
+        notifyListeners();
         return true;
       },
     );
@@ -67,15 +66,13 @@ class StockRouterDelegate extends RouterDelegate<StockRoutePath> with ChangeNoti
       return StockRoutePath.logIn();
     } else if (selectedStock != null && isLoggedIn) {
       return StockRoutePath.stockDetails(stocks.indexOf(selectedStock!));
-    }else{
+    } else {
       return StockRoutePath.home();
     }
-
   }
 
   @override
   Future<void> setNewRoutePath(StockRoutePath configuration) async {
-
     if (configuration.showLoginPage) {
       showLoginPage = true;
       selectedStock = null;
@@ -84,12 +81,10 @@ class StockRouterDelegate extends RouterDelegate<StockRoutePath> with ChangeNoti
       selectedStock = stocks[configuration.id!];
       showLoginPage = false;
       notifyListeners();
-    }else
-      {
+    } else {
       showLoginPage = false;
       selectedStock = null;
       notifyListeners();
     }
-
   }
 }

@@ -34,26 +34,26 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(title: const Text('Home Page'), automaticallyImplyLeading: false),
       body: SingleChildScrollView(
         child: Column(
-      children: [
-        ...stocks
-            .map((e) => ListTile(
-                  title: Text(e.name),
-                  trailing: Text(e.price.toString()),
-                  onTap: () {
-                    onStockSelected(e);
-                  },
-                ))
-            .toList(),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 50),
-          child: ElevatedButton(
-            onPressed: () {
-              onTap();
-            },
-            child: Text(isLoggedIn ? ' Go To Log Out Page' : 'Go To Log In Page'),
-          ),
-        )
-      ],
+          children: [
+            ...stocks
+                .map((e) => ListTile(
+                      title: Text(e.name),
+                      trailing: Text(e.price.toString()),
+                      onTap: () {
+                        onStockSelected(e);
+                      },
+                    ))
+                .toList(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 50),
+              child: ElevatedButton(
+                onPressed: () {
+                  onTap();
+                },
+                child: Text(isLoggedIn ? ' Go To Log Out Page' : 'Go To Log In Page'),
+              ),
+            )
+          ],
         ),
       ),
     );
